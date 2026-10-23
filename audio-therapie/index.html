@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="fr-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Audio Thérapie — MomenThom</title><style>html,body{margin:0;background:#0c0a07;color:#d8b875;font:16px system-ui,sans-serif;height:100%}main{min-height:100%;display:grid;place-items:center;text-align:center;padding:20px;box-sizing:border-box}h1{letter-spacing:.1em}p{color:#d0c4ab;max-width:520px}</style></head><body><main id="loader"><div><h1>AUDIO THÉRAPIE</h1><p id="status">Chargement du studio et de la salle d’écoute…</p></div></main><script>
+(async()=>{
+  const total=13;
+  try{
+    const parts=await Promise.all(Array.from({length:total},(_,i)=>fetch('_parts/part'+String(i).padStart(3,'0')+'.txt',{cache:'default'}).then(r=>{if(!r.ok)throw Error('Fichier manquant '+(i+1));return r.text()})));
+    const html=parts.join('');
+    if(!html.startsWith('<!doctype html>')||!html.trimEnd().endsWith('</html>'))throw Error('Contenu incomplet');
+    document.open();document.write(html);document.close();
+  }catch(e){
+    document.getElementById('status').textContent='Le site ne peut pas charger pour le moment. Réessayez dans quelques instants.';
+    console.error('Audio Thérapie:',e);
+  }
+})();</script></body></html>
